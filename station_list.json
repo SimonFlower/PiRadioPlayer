@@ -1,0 +1,261 @@
+{
+  "comments" : [
+    "List of radio stations for radio player.",
+    "Format is a dictionary: iplayer-station-name display-station-name station-icon.",
+    "The station icon may be missing. The list of stations comes from:",
+    "https://github.com/get-iplayer/get_iplayer/wiki/channels",
+    "The icon links come from:",
+    "https://www.bbc.co.uk/radio/stations" 
+  ],
+  "national_stations" : [
+		{
+            "iplayer_name": "BBC Asian Network",
+            "display_name": "BBC Asian Network",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_asian_network_colour.svg"
+        },
+        {
+            "iplayer_name": "BBC Radio 1",
+		    "display_name": "BBC Radio 1",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_one.svg"
+        },
+        {
+            "iplayer_name": "BBC Radio 1Xtra",
+		    "display_name": "BBC Radio 1Xtra",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_1xtra_alt_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 2",
+		    "display_name": "BBC Radio 2",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_two_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 3",
+		    "display_name": "BBC Radio 3",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_three_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 4 (incl. FM, LW)",
+		    "display_name": "BBC Radio 4 (incl. FM, LW)",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_fourfm_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 4 Extra",
+		    "display_name": "BBC Radio 4 Extra",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_four_extra_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 5 live sports extra",
+		    "display_name": "BBC Radio 5 live sports extra",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_five_live_sports_extra_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 5 live",
+		    "display_name": "BBC Radio 5 live",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_radio_five_live_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio 6 Music",
+		    "display_name": "BBC Radio 6 Music",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_6music_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC World Service",
+		    "display_name": "BBC World Service",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/national/bbc_world_service_colour.svg"
+        }
+    ],
+    "regional_stations" : [
+        {
+		    "iplayer_name": "BBC Radio Cymru",
+		    "display_name": "BBC Radio Cymru",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/nation/bbc_radio_cymru.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio Foyle",
+		    "display_name": "BBC Radio Foyle",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/nation/bbc_radio_foyle_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio Nan Gaidheal",
+		    "display_name": "BBC Radio Nan Gaidheal",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/nation/bbc_radio_nan_gaidheal_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio Scotland (incl. FM, MW, Orkney, Shetland, Highlands & Islands)",
+		    "display_name": "BBC Radio Scotland (incl. FM, MW, Orkney, Shetland, Highlands & Islands)",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/nation/bbc_radio_scotland_fm_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio Ulster",
+		    "display_name": "BBC Radio Ulster",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/nation/bbc_radio_ulster_colour.svg"
+        },
+        {
+		    "iplayer_name": "BBC Radio Wales",
+		    "display_name": "BBC Radio Wales",
+            "icon_url" : "https://rmp.files.bbci.co.uk/rmp-shared-assets/1.0.2/img/network-logos/nation/bbc_radio_wales_fm.svg"
+        }
+    ],
+    "local_stations" : [
+        {
+		    "iplayer_name": "BBC Coventry & Warwickshire",
+		    "display_name": "BBC Coventry & Warwickshire"
+        },
+        {
+		    "iplayer_name": "BBC Essex",
+		    "display_name": "BBC Essex"
+        },
+        {
+		    "iplayer_name": "BBC Hereford & Worcester",
+		    "display_name": "BBC Hereford & Worcester"
+        },
+        {
+		    "iplayer_name": "BBC Newcastle",
+		    "display_name": "BBC Newcastle"
+        },
+        {
+		    "iplayer_name": "BBC Radio Berkshire",
+		    "display_name": "BBC Radio Berkshire"
+        },
+        {
+		    "iplayer_name": "BBC Radio Bristol",
+		    "display_name": "BBC Radio Bristol"
+        },
+        {
+		    "iplayer_name": "BBC Radio Cambridgeshire",
+		    "display_name": "BBC Radio Cambridgeshire"
+        },
+        {
+		    "iplayer_name": "BBC Radio Cornwall",
+		    "display_name": "BBC Radio Cornwall"
+        },
+        {
+		    "iplayer_name": "BBC Radio Cumbria",
+		    "display_name": "BBC Radio Cumbria"
+        },
+        {
+		    "iplayer_name": "BBC Radio Derby",
+		    "display_name": "BBC Radio Derby"
+        },
+        {
+		    "iplayer_name": "BBC Radio Devon",
+		    "display_name": "BBC Radio Devon"
+        },
+        {
+		    "iplayer_name": "BBC Radio Gloucestershire",
+		    "display_name": "BBC Radio Gloucestershire"
+        },
+        {
+		    "iplayer_name": "BBC Radio Guernsey",
+		    "display_name": "BBC Radio Guernsey"
+        },
+        {
+		    "iplayer_name": "BBC Radio Humberside",
+		    "display_name": "BBC Radio Humberside"
+        },
+        {
+		    "iplayer_name": "BBC Radio Jersey",
+		    "display_name": "BBC Radio Jersey"
+        },
+        {
+		    "iplayer_name": "BBC Radio Kent",
+		    "display_name": "BBC Radio Kent"
+        },
+        {
+		    "iplayer_name": "BBC Radio Lancashire",
+		    "display_name": "BBC Radio Lancashire"
+        },
+        {
+		    "iplayer_name": "BBC Radio Leeds",
+		    "display_name": "BBC Radio Leeds"
+        },
+        {
+		    "iplayer_name": "BBC Radio Leicester",
+		    "display_name": "BBC Radio Leicester"
+        },
+        {
+		    "iplayer_name": "BBC Radio Lincolnshire",
+		    "display_name": "BBC Radio Lincolnshire"
+        },
+        {
+		    "iplayer_name": "BBC Radio London",
+		    "display_name": "BBC Radio London"
+        },
+        {
+		    "iplayer_name": "BBC Radio Manchester",
+		    "display_name": "BBC Radio Manchester"
+        },
+        {
+		    "iplayer_name": "BBC Radio Merseyside",
+		    "display_name": "BBC Radio Merseyside"
+        },
+        {
+		    "iplayer_name": "BBC Radio Norfolk",
+		    "display_name": "BBC Radio Norfolk"
+        },
+        {
+		    "iplayer_name": "BBC Radio Northampton",
+		    "display_name": "BBC Radio Northampton"
+        },
+        {
+		    "iplayer_name": "BBC Radio Nottingham",
+		    "display_name": "BBC Radio Nottingham"
+        },
+        {
+		    "iplayer_name": "BBC Radio Oxford",
+		    "display_name": "BBC Radio Oxford"
+        },
+        {
+		    "iplayer_name": "BBC Radio Sheffield",
+		    "display_name": "BBC Radio Sheffield"
+        },
+        {
+		    "iplayer_name": "BBC Radio Shropshire",
+		    "display_name": "BBC Radio Shropshire"
+        },
+        {
+		    "iplayer_name": "BBC Radio Solent",
+		    "display_name": "BBC Radio Solent"
+        },
+        {
+		    "iplayer_name": "BBC Radio Stoke",
+		    "display_name": "BBC Radio Stoke"
+        },
+        {
+		    "iplayer_name": "BBC Radio Suffolk",
+		    "display_name": "BBC Radio Suffolk"
+        },
+        {
+		    "iplayer_name": "BBC Radio York",
+		    "display_name": "BBC Radio York"
+        },
+        {
+		    "iplayer_name": "BBC Somerset",
+		    "display_name": "BBC Somerset"
+        },
+        {
+		    "iplayer_name": "BBC Surrey",
+		    "display_name": "BBC Surrey"
+        },
+        {
+		    "iplayer_name": "BBC Sussex",
+		    "display_name": "BBC Sussex"
+        },
+        {
+		    "iplayer_name": "BBC Tees",
+		    "display_name": "BBC Tees"
+        },
+        {
+		    "iplayer_name": "BBC Three Counties Radio",
+		    "display_name": "BBC Three Counties Radio"
+        },
+        {
+		    "iplayer_name": "BBC Wiltshire",
+		    "display_name": "BBC Wiltshire"
+        },
+        {
+		    "iplayer_name": "BBC WM 95.6",
+		    "display_name": "BBC WM 95.6"
+        }
+    ]
+}

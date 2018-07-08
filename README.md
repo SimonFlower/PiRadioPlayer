@@ -20,10 +20,10 @@ Dependencies (not added the Requriements document):
 Non-Python dependencies:
 
 - get_iplayer
-  get_iplayer players (not sure which are used)
+  - get_iplayer players (not sure which are used)
 - mpc/mpd
-  On Rapspbery PI:
-    sudo apt-get install mpd mpc
-  On Windows:
-    https://chriswarrick.com/blog/2013/09/01/mpd-on-windows/
-    Only mpd is needed, not mpc
+  - On Rapspbery PI:
+    - sudo apt-get install mpd mpc
+  - On Windows:
+    - https://chriswarrick.com/blog/2013/09/01/mpd-on-windows/
+    - Only mpd is needed, not mpc

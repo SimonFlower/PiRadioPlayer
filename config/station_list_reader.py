@@ -1,13 +1,11 @@
 import json
-import os
-from . import config
 
 class StationListReader:
-    def __init__(self):
+    def __init__(self, station_list_filaname: str):
+        self.errmsg = ""
         try:
             # get the station list
-            filename = os.path.join (config.get_config_dir(), config.STATION_LIST_FILENAME)
-            with open(filename) as data_file:
+            with open(station_list_filaname) as data_file:
                 self.stations = json.load(data_file)
             # check the station list
             for station in self.get_national_stations():
@@ -21,8 +19,6 @@ class StationListReader:
                          len(self.get_local_stations())
             if n_stations < 0:
                 self.errmsg = "No stations found in station list file"
-            else:
-                self.errmsg = None
         except Exception as e:
             self.errmsg = repr(e)
 
@@ -42,6 +38,8 @@ class StationListReader:
         return self.stations['local_stations']
 
     def get_errmsg(self) -> str:
+        if len (self.errmsg) == 0:
+            return None
         return self.errmsg
 
     def check_station(self, station: dict) -> None:

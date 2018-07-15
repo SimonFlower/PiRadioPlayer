@@ -1,0 +1,42 @@
+<html>
+<head>
+<style>
+.sta-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sta-item {
+    flex: 1;
+    width: 100px;
+    text-align: center;
+}
+
+div.sta-item:hover {
+    background: #303030;
+}
+</style>
+
+<script>
+    function live_play (url) {
+        alert (url);
+        $.get ("/live_play/" + url);
+    }
+</script>
+</head>
+
+<body>
+<div class="sta-container">
+   {% for station in stations %}
+       {% set streaming_url = station['streaming_url'] %}
+       <div class="sta-item" onclick="live_play ('{{streaming_url}}')">
+           {{station['display_name']}}
+           {% if station['icon_url'] is not none %}
+               <img src="{{station['icon_url']}}" width="50" height="50">
+           {% endif %}
+       </div>
+   {% endfor %}
+</div>
+
+</body>
+</html>

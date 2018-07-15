@@ -1,0 +1,77 @@
+<html>
+<head>
+<style>
+.ss-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.ss-item {
+    flex: 1;
+    flex-basis: 0;
+    display: block;
+    padding-left: 20px;
+    cursor: inherit;
+    text-align: left;
+}
+
+</style>
+</head>
+
+<body>
+<div class="ss-container">
+    <div class="ss-item">
+        BBC Home Page Link
+    </div>
+
+    <div class="ss-item">
+        <fieldset>
+            <form action="">
+                <div class="alignLeft">
+                    <input type="radio" name="LiveOrOnDemand" value="Live" id="Live">
+                    <label for="Live">Live</label>
+                </div>
+                <div class="alignLeft">
+                    <input type="radio" name="LiveOrOnDemand" value="On Demand" id="OnDemand">
+                    <label for="OnDemand">On Demand</label>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+
+    <div class="ss-item">
+        <fieldset>
+            <form action="">
+                <div class="alignLeft">
+                    <input type="radio" name="Zone" value="National" id="National">
+                    <label for="National">National</label>
+                </div>
+                <div class="alignLeft">
+                    <input type="radio" name="Zone" value="Regional" id="Regional">
+                    <label for="Regional">Regional</label>
+                </div>
+                <div class="alignLeft">
+                    <input type="radio" name="Zone" value="Local" id="Local">
+                    <label for="Local">Local</label>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+
+    {% if station_list is not none %}
+        <div class="ss-item">
+            <form action="">
+                <select>
+                    {% for station in stations %}
+                        <option value="{{station['display_name']}}">{{station['display_name']}}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -2,7 +2,8 @@ from mpd import MPDClient
 
 class AudioPlayer:
     """
-    A class that uses the python-mpd2 library to play a radio station.
+    A class that uses the python-mpd2 library to play a radio station. Documentation here:
+    https://python-mpd2.readthedocs.io/en/latest/topics/commands.html
     """
 
     def __init__(self, hostname: str = "localhost", port: int = 6600):

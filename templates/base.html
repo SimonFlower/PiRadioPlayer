@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<title>Radio Player</title>
+</head>
+
+<body>
+<!-- This section displays error messages (if any) -->
+<section id="error_messages">
+    <!-- server side error messages -->
+    {% if errmsgs is not none %}
+        <section>
+            {% for msg in errmsgs %}
+                <div class="flash">{{ msg }}</div>
+            {% endfor %}
+        </section>
+    {% endif %}
+</section>
+
+<!-- This section holds the live/on-demand and station selection -->
+<section id="station_selector"></section>
+<hr>
+
+<!--- This section holds the programme selection - inserted by pages that inherit from this template -->
+<section id="programme_selector"></section>
+<hr>
+
+<!-- This section holds the programme navigation and volume controls -->
+<section id="play_bar"></section>
+
+<!-- Load initial contents of page sections -->
+<!-- TODO: add success/failure handlers to the JQuery calls -->
+<script>
+$( "#station_selector" ).load( "/station_selector/national" );
+$( "#programme_selector" ).load( "{{content}}" );
+$( "#play_bar" ).load( "/play_bar" );
+</script>
+
+</body>
+</html>

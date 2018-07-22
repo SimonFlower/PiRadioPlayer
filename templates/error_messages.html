@@ -1,0 +1,23 @@
+<html>
+<head>
+<style>
+.error_messages
+{
+    color: black;
+    background-color: red;
+}
+</style>
+</head>
+
+<body>
+<div class="error_messages">
+    <h1>Initialisation Errors</h1>
+    <ul>
+        {% for msg in msgs %}
+            <li>{{ msg }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+</div>
+</body>
+</html>

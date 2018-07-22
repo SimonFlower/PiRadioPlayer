@@ -1,0 +1,31 @@
+<html>
+<head>
+<style>
+.sta-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sta-item {
+    flex: 1;
+}
+
+div.sta-item:hover {
+    background: #303030;
+</style>
+</head>
+
+<body>
+<div class="sta-container">
+    {% for station in stations %}
+        {% set streaming_url = station['streaming_url'] %}
+        <div class="sta-item" onclick="play_url ('{{streaming_url}}')">
+            <canvas id="{{station['id']}}" width="150" height="150"></canvas>
+            <script>draw_station("{{station['id']}}", "{{station['display_name']}}");</script>
+        </div>
+    {% endfor %}
+</div>
+<hr>
+
+</body>
+</html>

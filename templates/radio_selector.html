@@ -8,12 +8,12 @@
 }
 
 .ss-item {
-    flex: 1;
-    flex-basis: 0;
+    flex: 0 0 auto;
     display: block;
     padding-left: 20px;
     cursor: inherit;
     text-align: left;
+    height: 100%;
 }
 
 </style>
@@ -29,11 +29,15 @@
         <fieldset>
             <form action="">
                 <div class="alignLeft">
-                    <input type="radio" name="LiveOrOnDemand" value="Live" id="Live">
-                    <label for="Live">Live</label>
+                    <input type="radio" name="State" value="PowerOff" id="PowerOff" checked="checked" onclick="play_stop()">
+                    <label for="PowerOff">Power Off</label>
                 </div>
                 <div class="alignLeft">
-                    <input type="radio" name="LiveOrOnDemand" value="On Demand" id="OnDemand">
+                    <input type="radio" name="State" value="Live" id="Live">
+                    <label for="Live">Live Radio</label>
+                </div>
+                <div class="alignLeft">
+                    <input type="radio" name="State" value="On Demand" id="OnDemand">
                     <label for="OnDemand">On Demand</label>
                 </div>
             </form>
@@ -44,7 +48,7 @@
         <fieldset>
             <form action="">
                 <div class="alignLeft">
-                    <input type="radio" name="Zone" value="National" id="National">
+                    <input type="radio" name="Zone" value="National" id="National" checked="checked">
                     <label for="National">National</label>
                 </div>
                 <div class="alignLeft">
@@ -71,7 +75,14 @@
         </div>
     {% endif %}
 
+    <div class="ss-item">
+        <form action=""">
+            <input type="checkbox" name="info_toggle" value="info_toggle" onclick="info_window_toggle_visible()">
+            <label for="info_toggle">Show Info</label>
+        </form>
+    </div>
 </div>
+<hr>
 
 </body>
 </html>

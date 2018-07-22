@@ -1,6 +1,6 @@
 import unittest
 import platform
-from .. import config
+from .. import config_utils
 import os
 
 
@@ -11,20 +11,20 @@ class TestConfig (unittest.TestCase):
             self.is_windows = True
         else:
             self.is_windows = False
-        self.clf = config.ConfigLocationFinder()
+        self.clf = config_utils.ConfigLocationFinder()
         self.home = os.path.expanduser("~")
 
     def test_get_station_list_path(self):
-        local_path = os.path.join(self.home, config.RADIO_PLAYER_LOCAL_FOLDER, config.STATION_LIST_FILENAME)
+        local_path = os.path.join(self.home, config_utils.RADIO_PLAYER_LOCAL_FOLDER, config_utils.STATION_LIST_FILENAME)
         if self.is_windows:
             global_path = None
         else:
-            global_path = os.path.join("etc", "radio_player", config.STATION_LIST_FILENAME)
+            global_path = os.path.join("etc", "radio_player", config_utils.STATION_LIST_FILENAME)
         file_path = self.clf.get_station_list_path()
         self.assertTrue(file_path == local_path or file_path == global_path)
 
     def test_get_pid_folder(self):
-        local_path = os.path.join(self.home, config.RADIO_PLAYER_LOCAL_FOLDER)
+        local_path = os.path.join(self.home, config_utils.RADIO_PLAYER_LOCAL_FOLDER)
         if self.is_windows:
             global_path = None
         else:
@@ -33,7 +33,7 @@ class TestConfig (unittest.TestCase):
         self.assertTrue(file_path == local_path or file_path == global_path)
 
     def test_get_log_folder(self):
-        local_path = os.path.join(self.home, config.RADIO_PLAYER_LOCAL_FOLDER)
+        local_path = os.path.join(self.home, config_utils.RADIO_PLAYER_LOCAL_FOLDER)
         if self.is_windows:
             global_path = None
         else:

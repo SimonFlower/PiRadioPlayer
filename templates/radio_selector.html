@@ -1,22 +1,32 @@
 <html>
 <head>
-<style>
-.ss-container {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
+    <style>
+    .ss-container {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
 
-.ss-item {
-    flex: 0 0 auto;
-    display: block;
-    padding-left: 20px;
-    cursor: inherit;
-    text-align: left;
-    height: 100%;
-}
-
-</style>
+    .ss-item {
+        flex: 0 0 auto;
+        display: block;
+        padding-left: 20px;
+        cursor: inherit;
+        text-align: left;
+        height: 100%;
+    }
+    </style>
+    <script>
+        function call_zone_onclick_handler () {
+            var radios = document.getElementsByName('Zone');
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    radios[i].click();
+                    break;
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -33,11 +43,11 @@
                     <label for="PowerOff">Power Off</label>
                 </div>
                 <div class="alignLeft">
-                    <input type="radio" name="State" value="Live" id="Live">
+                    <input type="radio" name="State" value="Live" id="Live" onclick="call_zone_onclick_handler()">
                     <label for="Live">Live Radio</label>
                 </div>
                 <div class="alignLeft">
-                    <input type="radio" name="State" value="On Demand" id="OnDemand">
+                    <input type="radio" name="State" value="On Demand" id="OnDemand" onclick="show_on_demand_schedule()">
                     <label for="OnDemand">On Demand</label>
                 </div>
             </form>
@@ -48,15 +58,15 @@
         <fieldset>
             <form action="">
                 <div class="alignLeft">
-                    <input type="radio" name="Zone" value="National" id="National" checked="checked">
+                    <input type="radio" name="Zone" value="National" id="National" checked="checked" onclick="show_station_list('national')">
                     <label for="National">National</label>
                 </div>
                 <div class="alignLeft">
-                    <input type="radio" name="Zone" value="Regional" id="Regional">
+                    <input type="radio" name="Zone" value="Regional" id="Regional" onclick="show_station_list('regional')">
                     <label for="Regional">Regional</label>
                 </div>
                 <div class="alignLeft">
-                    <input type="radio" name="Zone" value="Local" id="Local">
+                    <input type="radio" name="Zone" value="Local" id="Local" onclick="show_station_list('local')">
                     <label for="Local">Local</label>
                 </div>
             </form>

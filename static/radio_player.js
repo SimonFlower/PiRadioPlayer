@@ -7,15 +7,27 @@ var info_pane_visible = false;
 /********************************************************************************************************************
  * client side calls to the server
  ********************************************************************************************************************/
+
+/** select the station list to be displayed in the station list / schedule component */
+function show_station_list (zone) {
+    $( "#station_schedule_selector" ).load( "/component/live_station_list/" + zone );
+}
+
+/** select the on-demand schedule to be displayed in the station list / schedule component */
+function show_on_demand_schedule () {
+    $( "#station_schedule_selector" ).load( "/component/on_demand_schedule" );
+}
+
 /** play a station
   * @param string url the station's URL */
 function play_url (url) {
     $.get ("/play/live/" + url);
 }
 
-/** stop playing */
+/** stop playing and go to 'standby' */
 function play_stop () {
     $.get ("/play/stop");
+    $( "#station_schedule_selector" ).load( "/component/blank" );
 }
 
 /** toggle display of information component on base window */

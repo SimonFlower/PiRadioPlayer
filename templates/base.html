@@ -7,14 +7,25 @@
 <link rel="stylesheet" href="/static/style.css">
 
 <title>Radio Player</title>
+
+<style>
+
+</style>
+
 </head>
 
 <body>
 <!-- This section displays error messages (if any) -->
-<section id="error_messages" ></section>
-
-<!-- This section displays info messages -->
-<section id="info_messages" ></section>
+{% if error_messages|length > 0 %}
+    <section id="error_messages" class="ui-state-error">
+        <h3>Initialisation Errors</h3>
+        <ul>
+        {% for msg in error_messages %}
+            <li>{{ msg }}</li>
+        {% endfor %}
+        </ul>
+    </section>
+{% endif %}
 
 <!-- This section holds the live/on-demand and station selection -->
 <section id="radio_selector"></section>
@@ -28,9 +39,7 @@
 <!-- Load initial contents of page sections -->
 <!-- TODO: add success/failure handlers to the JQuery calls -->
 <script>
-$( "#error_messages" ).load( "/component/error_messages" );
-$( "#info_messages" ).load( "/component/info_messages/false" );
-$( "#radio_selector" ).load( "/component/radio_selector/None" );
+$( "#radio_selector" ).load( "/component/radio_selector" );
 $( "#station_schedule_selector" ).load( "/component/blank" );
 $( "#play_bar" ).load( "/component/play_bar" );
 </script>

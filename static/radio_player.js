@@ -1,10 +1,5 @@
 
 /********************************************************************************************************************
- * storage for state variables
- ********************************************************************************************************************/
-var info_pane_visible = false;
-
-/********************************************************************************************************************
  * client side calls to the server
  ********************************************************************************************************************/
 
@@ -30,15 +25,26 @@ function play_stop () {
     $( "#station_schedule_selector" ).load( "/component/blank" );
 }
 
-/** toggle display of information component on base window */
-function info_window_toggle_visible () {
-    info_pane_visible = ! info_pane_visible;
-    $( "#info_messages" ).load( "/component/info_messages/" + info_pane_visible );
-}
 
 /********************************************************************************************************************
- * graphics code for rendering station widegets
+ * graphics code for rendering a BBC logo anf the station widgets
  ********************************************************************************************************************/
+/** draw the BBC logo on a canvas
+ *  @param string id the ID of the canvas to draw on */
+function draw_bbc_logo (id) {
+    /* set up to draw on the canvas */
+    var canvas = document.getElementById(id);
+    var ctx = canvas.getContext("2d");
+
+    /* draw BBC text */
+    ctx.font = "bold italic 20pt Arial";
+    ctx.lineWidth=2;
+    ctx.textAlign = "center";
+    ctx.textBaseline="middle";
+    block_text (ctx, "BBC", canvas.width/2, canvas.height/2, true, 3,
+                "#000000", "#FFFFFF", "#FFFFFF");
+}
+
 /** draw a station on a canvas
  *  @param string id the ID of the canvas to draw on
  *  @param string name the station name to draw */
@@ -208,38 +214,37 @@ function block_text (ctx, text, x, y, individual, padding,
  * @param {Boolean} [fill = false] Whether to fill the rectangle.
  * @param {Boolean} [stroke = true] Whether to stroke the rectangle. */
 function round_rect(ctx, x, y, width, height, radius, fill, stroke) {
-  if (typeof stroke == 'undefined') {
-    stroke = true;
-  }
-  if (typeof radius === 'undefined') {
-    radius = 5;
-  }
-  if (typeof radius === 'number') {
-    radius = {tl: radius, tr: radius, br: radius, bl: radius};
-  } else {
-    var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
-    for (var side in defaultRadius) {
-      radius[side] = radius[side] || defaultRadius[side];
+    if (typeof stroke == 'undefined') {
+        stroke = true;
     }
-  }
-  ctx.beginPath();
-  ctx.moveTo(x + radius.tl, y);
-  ctx.lineTo(x + width - radius.tr, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-  ctx.lineTo(x + width, y + height - radius.br);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-  ctx.lineTo(x + radius.bl, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-  ctx.lineTo(x, y + radius.tl);
-  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-  ctx.closePath();
-  if (fill) {
-    ctx.fill();
-  }
-  if (stroke) {
-    ctx.stroke();
-  }
-
+    if (typeof radius === 'undefined') {
+        radius = 5;
+    }
+    if (typeof radius === 'number') {
+        radius = {tl: radius, tr: radius, br: radius, bl: radius};
+    } else {
+        var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+        for (var side in defaultRadius) {
+            radius[side] = radius[side] || defaultRadius[side];
+        }
+    }
+    ctx.beginPath();
+    ctx.moveTo(x + radius.tl, y);
+    ctx.lineTo(x + width - radius.tr, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+    ctx.lineTo(x + width, y + height - radius.br);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+    ctx.lineTo(x + radius.bl, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+    ctx.lineTo(x, y + radius.tl);
+    ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+    ctx.closePath();
+    if (fill) {
+        ctx.fill();
+    }
+    if (stroke) {
+        ctx.stroke();
+    }
 }
 
 /**

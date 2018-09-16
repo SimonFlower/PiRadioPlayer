@@ -1,51 +1,62 @@
 import json
 
 class StationListReader:
-    def __init__(self, station_list_filaname: str):
-        # get the station list
-        with open(station_list_filaname) as data_file:
-            self.stations = json.load(data_file)
+    def __init__(self, station_list_filename: str):
+        """
+        Read the station list from a file
+        :param station_list_filename: the file to read from
+
+        If self.err list is greater than zero, there were errors
+        """
+        self.err = list ()
+
+        # catch exceptions so that the station list can still be used (though empty) even if there is an error
+        try:
+            # get the station list
+            with open(station_list_filename) as data_file:
+                self.stations = json.load(data_file)
+        except Exception as e:
+            self.err += [str(e)]
+            self.stations = dict ()
+
+        # check stations lists exist
+        if not 'national_stations' in self.stations:
+            self.err += ["National stations list missing from station list file"]
+            self.stations ['national_stations'] = list ()
+        if not 'regional_stations' in self.stations:
+            self.err += ["Regional stations list missing from station list file"]
+            self.stations['regional_stations'] = list()
+        if not 'local_stations' in self.stations:
+            self.err += ["Local stations list missing from station list file"]
+            self.stations['local_stations'] = list()
+
         # check the station list - also add a unique ID to each station
         id = 1
-        for station in self.get_national_stations():
-            self.check_station(station, id)
+        for station in self.get_station_list("national"):
+            self.__check_station__(station, id)
             id += 1
-        for station in self.get_regional_stations():
-            self.check_station(station, id)
+        for station in self.get_station_list("regional"):
+            self.__check_station__(station, id)
             id += 1
-        for station in self.get_local_stations():
-            self.check_station(station, id)
+        for station in self.get_station_list("local"):
+            self.__check_station__(station, id)
             id += 1
-        if len(self.get_national_stations()) <= 0:
-            raise RuntimeError("No National Stations found in station list file")
-        if len(self.get_regional_stations()) <= 0:
-            raise RuntimeError("No Regional Stations found in station list file")
-        if len(self.get_local_stations()) <= 0:
-            raise RuntimeError("No Local Stations found in station list file")
-
-    def get_national_stations(self) -> dict:
-        return self.stations['national_stations']
-
-    def get_regional_stations(self) -> dict:
-        return self.stations['regional_stations']
-
-    def get_local_stations(self) -> dict:
-        return self.stations['local_stations']
 
     # return national, regional or local stations from the stations list
-    def get_station_list_from_zone(self, zone: str) -> dict:
+    def get_station_list(self, zone: str) -> dict:
         if zone.upper() == "NATIONAL":
-            return self.get_national_stations()
+            return self.stations['national_stations']
         if zone.upper() == "REGIONAL":
-            return self.get_regional_stations()
+            return self.stations['regional_stations']
         if zone.upper() == "LOCAL":
-            return self.get_local_stations()
+            return self.stations['local_stations']
         return list()
 
-    def check_station(self, station: dict, id: int) -> None:
-        # add the ID to the station details
+    def __check_station__(self, station: dict, id: int) -> None:
         station['id'] = "id_" + str(id)
 
-        # attempt to read the mandatory fields, throwing an exception if they aren't present
-        dsn = station['display_name']
-        url = station['streaming_url']
+        # attempt to read the mandatory fields, returing an error if they aren't present
+        if not 'display_name' in station:
+            self.err += ['Station missing display name: ' + id]
+        if not 'streaming_url' in station:
+            self.err += ['Station missing streaming URL: ' + id]

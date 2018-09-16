@@ -2,8 +2,11 @@ import os
 import errno
 import shutil
 import pathlib
+import json
+import tempfile
 
 # constant names of things we need to access
+GENERAL_CONFIG_FILENAME = "radio_player_config.json"
 STATION_LIST_FILENAME = "station_list.json"
 RADIO_PLAYER_LOCAL_FOLDER = ".radio_player"
 
@@ -15,66 +18,78 @@ class ConfigLocationFinder:
     - Global mode - config in system default places
     - Local mode - all config stored under users home folder
     This module uses global mode if it's accessible, local mode otherwise.
-    Global mode is never available on Windows
+    Global mode is never available on Windows.
+
+    If self.err is set there was an initialisation error
     """
     def __init__(self):
-        # try to use the global locations
+        # try to use the global locations for configuration files
+        self.err = None
         try:
-            self.init_global()
+            # config comes from /etc/radio_player
+            self.__init2__("/etc/radio_player", "/var/run", "/var/log")
         except Exception:
-            # use local locations
-            self.init_local()
+            # use local locations for configuration files
+            try:
+                home = pathlib.Path.home()
+                folder = os.path.join(str(home), RADIO_PLAYER_LOCAL_FOLDER)
+                if not os.access(folder, os.R_OK):
+                    os.mkdir(folder, 0o755)
+                self.__init2__(folder)
+            except Exception as e:
+                # record the error
+                self.err = str(e)
 
-    def init_global(self) -> None:
-        # config comes from /etc/radio_player
-        config_folder = "/etc/radio_player"
+                # set defaults so that this class will still return a value even if there is an error
+                self.general_config_path = tempfile.gettempdir()
+                self.station_list_path = tempfile.gettempdir()
+                self.pid_folder = tempfile.gettempdir()
+                self.log_folder = tempfile.gettempdir()
+                self.config = dict ()
+
+        # check mpd connecctions details
+        if not 'mpd_host' in self.config:
+            self.config['mpd_host'] = "localhost"
+        if not 'mpd_host' in self.config:
+            self.config['mpd_port'] = 6600
+
+    def __init2__(self, config_folder: str, pid_folder: str = None, log_folder: str = None) -> None:
         if not os.access(config_folder, os.R_OK):
-            os.mkdir(config_folder, 755)
+            os.mkdir(config_folder, 0o755)
 
-        # copy default station list configuration
-        station_list_path = os.path.join(config_folder, STATION_LIST_FILENAME)
-        if not os.access(station_list_path, os.R_OK):
+        # copy default general and station list configuration
+        self.general_config_path = os.path.join(config_folder, GENERAL_CONFIG_FILENAME)
+        self.station_list_path = os.path.join(config_folder, STATION_LIST_FILENAME)
+        if not os.access(self.general_config_path, os.R_OK):
+            src_filename = os.path.join(os.path.dirname(__file__), "..", "initial_data", "radio_player_config.json")
+            shutil.copy2(src_filename, self.general_config_path)
+        if not os.access(self.station_list_path, os.R_OK):
             src_filename = os.path.join(os.path.dirname(__file__), "..", "initial_data", "station_list.json")
-            shutil.copy2(src_filename, station_list_path)
+            shutil.copy2(src_filename, self.station_list_path)
 
-        # pid files are stored in /var/run
-        pid_folder = "/var/run"
-        if not os.access(pid_folder, os.W_OK):
+        # check pid files storage
+        if pid_folder is None:
+            pid_folder = config_folder
+        elif not os.access(pid_folder, os.W_OK):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pid_folder)
 
-        # log files go to /var/log
-        log_folder = "/var/log"
-        if not os.access(log_folder, os.W_OK):
+        # check log files storage
+        if log_folder is None:
+            log_folder = config_folder
+        elif not os.access(log_folder, os.W_OK):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), log_folder)
 
         # record where things are kept
-        self.station_list_path = station_list_path
         self.pid_folder = pid_folder
         self.log_folder = log_folder
 
-    def init_local(self) -> None:
-        # everything is stored at ~/.radio_player
-        home = pathlib.Path.home()
-        folder = os.path.join(home, RADIO_PLAYER_LOCAL_FOLDER)
-        if not os.access(folder, os.R_OK):
-            os.mkdir(folder, 755)
+        # load general config
+        with open(self.general_config_path) as data_file:
+            config = json.load(data_file)
+        self.config = config['config']
 
-        # copy default station list configuration
-        station_list_path = os.path.join(folder, STATION_LIST_FILENAME)
-        if not os.access(station_list_path, os.R_OK):
-            src_filename = os.path.join(os.path.dirname(__file__), "..", "initial_data", "station_list.json")
-            shutil.copy2(src_filename, station_list_path)
-
-        # record where things are kept
-        self.station_list_path = station_list_path
-        self.pid_folder = folder
-        self.log_folder = folder
-
-    def get_station_list_path(self) -> str:
-        return self.station_list_path
-
-    def get_pid_folder(self) -> str:
-        return self.pid_folder
-
-    def get_log_folder(self) -> str:
-        return self.log_folder
+        # check for required values
+        if not self.config['mpd_host']:
+            self.config['mpd_host'] = 'localhost'
+        if not self.config['mpd_port']:
+            self.config['mpd_port'] = 6600

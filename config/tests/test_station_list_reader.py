@@ -12,18 +12,18 @@ class TestStationListReader (unittest.TestCase):
     def test_get_national_stations(self) -> None:
         stations = self.slr.get_national_stations()
         self.assertEqual(len(stations), 13)
-        stations = self.slr.get_station_list_from_zone("national")
+        stations = self.slr.get_station_list("national")
         self.assertEqual(len(stations), 13)
 
     def test_get_regional_stations(self) -> None:
         stations = self.slr.get_regional_stations()
         self.assertEqual(len(stations), 6)
-        stations = self.slr.get_station_list_from_zone("regional")
+        stations = self.slr.get_station_list("regional")
         self.assertEqual(len(stations), 6)
 
     def test_get_local_stations(self) -> None:
         stations = self.slr.get_local_stations()
         self.assertEqual(len(stations), 40)
-        stations = self.slr.get_station_list_from_zone("local")
+        stations = self.slr.get_station_list("local")
         self.assertEqual(len(stations), 40)
 

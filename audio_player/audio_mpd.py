@@ -8,37 +8,56 @@ class AudioPlayer:
 
     def __init__(self, hostname: str = "localhost", port: int = 6600):
         """
-        Raises an mpd.base.ConnecctionError if mpd can't be found
         :param hostname: IP name / address of mpd service
         :param port: port for mpd service
         """
-        # open the connnection to mpd
+        self.err = None
         self.client = MPDClient()
-        self.client.timeout = 10
-        self.client.idletimeout = None
-        self.client.connect(hostname, port)
 
-        # clear the current playlist
-        self.client.clear()
+        try:
+            # open the connnection to mpd
+            self.client.timeout = 10
+            self.client.idletimeout = None
+            self.client.connect(hostname, port)
+
+            # clear the current playlist
+            self.client.clear()
+        except Exception as e:
+            self.err = "Error initialising audio player: " + str(e)
 
     def __del__(self):
         # close the connection to mpd
-        self.client.close()
-        self.client.disconnect()
+        try:
+            self.client.close()
+            self.client.disconnect()
+        except Exception:
+            pass
 
-    def live_stream_mpd(self, url: str) -> None:
-        self.stop_mpd()
-        self.client.add(url)
-        self.client.play(0)
+    def live_stream_mpd(self, url: str) -> str:
+        msg = self.stop_mpd();
+        if not msg is None:
+            try:
+                self.client.add(url)
+                self.client.play(0)
+            except Exception as e:
+                msg = "Error communicating with audio player:" + str(e)
 
-    def stop_mpd(self) -> None:
-        self.client.clear()
-        self.client.stop()
+    def stop_mpd(self) -> str:
+        try:
+            self.client.clear()
+            self.client.stop()
+        except Exception as e:
+            return "Error communicating with audio player:" + str(e)
+        return None
 
-    def set_volume(self, volume: int) -> None:
+    def set_volume(self, volume: int) -> str:
         """
         Set the volume
         :param volume: 0 to 100
         """
-        self.client.setvol(volume)
+        try:
+            self.client.setvol(volume)
+        except Exception as e:
+            return "Error communicating with audio player:" + str(e)
+        return None
 

@@ -1,6 +1,10 @@
 Reminders
 ---------
 
+Running on Raspberry PI (temporary method):
+- cd <top-level-project-folder>
+- flask run --host=0.0.0.0
+
 Using virtualenv
 - c:
 - cd \users\smf\radio_player

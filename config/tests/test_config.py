@@ -20,7 +20,7 @@ class TestConfig (unittest.TestCase):
             global_path = None
         else:
             global_path = os.path.join("etc", "radio_player", config_utils.STATION_LIST_FILENAME)
-        file_path = self.clf.get_station_list_path()
+        file_path = self.clf.station_list_path
         self.assertTrue(file_path == local_path or file_path == global_path)
 
     def test_get_pid_folder(self):
@@ -29,7 +29,7 @@ class TestConfig (unittest.TestCase):
             global_path = None
         else:
             global_path = os.path.join("var", "run")
-        file_path = self.clf.get_pid_folder()
+        file_path = self.clf.pid_folder
         self.assertTrue(file_path == local_path or file_path == global_path)
 
     def test_get_log_folder(self):
@@ -38,5 +38,5 @@ class TestConfig (unittest.TestCase):
             global_path = None
         else:
             global_path = os.path.join("var", "log")
-        file_path = self.clf.get_log_folder()
+        file_path = self.clf.log_folder
         self.assertTrue(file_path == local_path or file_path == global_path)

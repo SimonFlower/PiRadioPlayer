@@ -1,77 +1,80 @@
-from flask import Flask, redirect
+from flask import Flask
 from flask import render_template
 
 from config import config_utils
 from config import station_list_reader
 from audio_player import audio_mpd
 
-import urllib
+# TODO : Add logging and send stacktrace of any exceptions to the log, something like this:
+#        traceback.print_exc()
 
+
+# We want to keep as much state as possible on the client side, but a radio is a device that
+# is either on or off and it can only play one station at a time, so some state has to live
+# on the server. These variables hold the state:
+#   now_playing may contain:
+#     None = power off
+#     An ID from the station list = the ID for the live stream that's playing
+#     On-demand TBC
+now_playing = None
 
 # initialise Flask
 app = Flask(__name__)
 
 # top level application variables
 err_msgs = list ()
-info_msgs = list ()
+info_msgs = dict ()
 program_config = None
 stations = None
 audio_player = None
 
 # initialise configuration
-try:
-    program_config = config_utils.ConfigLocationFinder()
-    info_msgs += ["Station list: " + program_config.get_station_list_path()]
-except Exception as e:
-    err_msgs += ["Error finding configuration: " + repr(e)]
+program_config = config_utils.ConfigLocationFinder()
+info_msgs["Configuration file"] = program_config.general_config_path
+info_msgs["Station list file"] =  program_config.station_list_path
+info_msgs["Log folder"] =         program_config.log_folder
+info_msgs["PID folder"] =         program_config.pid_folder
+info_msgs["MPD player host"] =    program_config.config['mpd_host']
+info_msgs["MPD player port"] =    program_config.config['mpd_port']
+if program_config.err is not None:
+    err_msgs += [program_config.err]
 
 # load list of stations
-try:
-    if program_config is not None:
-        stations = station_list_reader.StationListReader(program_config.get_station_list_path())
-except Exception as e:
-    err_msgs += ["Error loading station list: " + repr(e)]
+stations = station_list_reader.StationListReader(program_config.station_list_path)
+if len (stations.err) > 0:
+    err_msgs += stations.err
 
-# TODO: add a config that allows specifying non-default port (and host?) - pass them to this constructor:
 # initialise audio player
-try:
-    audio_player = audio_mpd.AudioPlayer ()
-except Exception as e:
-    err_msgs += ["Error initialising audio player: " + repr(e)]
+audio_player = audio_mpd.AudioPlayer(program_config.config['mpd_host'],
+                                     program_config.config['mpd_port'])
+if audio_player.err is not None:
+    err_msgs += [audio_player.err]
 
 #######################################################################################################################
-# base page for the applications
+# base page for the applications - this is a single page application with compnent parts of the page that can be
+# loaded separately:
+# - An error message component - only displayed if there are errors initialising the app
+# - Standby / Live radio / On demand selection pane
+# - Live radio selection / On demand selection
+# - Play bar - 'now playing' information
 #######################################################################################################################
 # The base page - client side code loads the individual components
 @app.route('/')
 def base_page() -> str:
-    return render_template('base.html')
+    return render_template('base.html',
+                           error_messages = err_msgs)
 
 #######################################################################################################################
 # component parts of the base page
 #######################################################################################################################
-# The error messages component - only display if there are error messages
-@app.route('/component/error_messages')
-def show_err_msgs() -> str:
-    if len(err_msgs) <= 0:
-        return ""
-    return render_template('error_messages.html', msgs=err_msgs)
-
-# The info display component
-@app.route('/component/info_messages/<string:visible>')
-def show_info_msgs(visible: str) -> str:
-    if visible.upper() == "TRUE":
-        return render_template('info_messages.html', msgs=info_msgs)
-    return ""
-
 # The programme selector component - selections in this component control the station list component
-@app.route('/component/radio_selector/<string:zone>')
-def radio_selector(zone: str) -> str:
-    if stations is None or zone.upper() == "NONE":
-        sta_list = list ()
-    else:
-        sta_list = stations.get_station_list_from_zone(zone)
-    return render_template('radio_selector.html', stations=sta_list)
+@app.route('/component/radio_selector')
+def radio_selector() -> str:
+    return render_template('radio_selector.html',
+                           national_stations = stations.get_station_list("national"),
+                           regional_stations = stations.get_station_list("regional"),
+                           local_stations = stations.get_station_list("local"),
+                           info_msgs=info_msgs)
 
 # The station list component for live stations
 @app.route("/component/live_station_list/<string:zone>")
@@ -79,7 +82,7 @@ def live_station_list(zone: str) -> str:
     if stations is None:
         sta_list = list ()
     else:
-        sta_list = stations.get_station_list_from_zone(zone)
+        sta_list = stations.get_station_list(zone)
     return render_template('live_station_list.html', stations=sta_list)
 
 # A blank component

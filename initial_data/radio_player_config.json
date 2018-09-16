@@ -1,0 +1,10 @@
+{
+  "comments" : [
+    "General configuration for radio player",
+    "A dictionary containing key value pairs (which should be self-describing)"
+  ],
+  "config" : {
+    "mpd_host": "localhost",
+    "mpd_port": 6600
+  }
+}

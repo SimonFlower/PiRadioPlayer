@@ -1,17 +1,24 @@
 import json
+import re
 
 class StationListReader:
-    def __init__(self, station_list_filename: str):
+    def __init__(self, station_list_filename: str, force_fail: bool = False):
         """
         Read the station list from a file
         :param station_list_filename: the file to read from
+        :param force_fail a testing parameter - set true to force a failure
 
-        If self.err list is greater than zero, there were errors
+        If len(self.err) list is greater than zero, there were errors
         """
         self.err = list ()
 
+        # compile a pattern to match colour constants in CSS (e.g "#FF0000")
+        self.colour_pattern = re.compile("^#([A-F,a-f,0-9]){6}$")
+
         # catch exceptions so that the station list can still be used (though empty) even if there is an error
         try:
+            if force_fail:
+                raise RuntimeError ("Forcing failure")
             # get the station list
             with open(station_list_filename) as data_file:
                 self.stations = json.load(data_file)
@@ -60,3 +67,9 @@ class StationListReader:
             self.err += ['Station missing display name: ' + id]
         if not 'streaming_url' in station:
             self.err += ['Station missing streaming URL: ' + id]
+
+        # check for display colour and insert if not present (or malformed)
+        if not 'display_colour' in station:
+            station['display_colour'] = '#FF0000'
+        elif not self.colour_pattern.match (station['display_colour']):
+            station['display_colour'] = '#FF0000'

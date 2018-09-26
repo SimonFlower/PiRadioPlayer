@@ -2,6 +2,7 @@ import unittest
 import platform
 from .. import config_utils
 import os
+import tempfile
 
 
 class TestConfig (unittest.TestCase):
@@ -40,3 +41,11 @@ class TestConfig (unittest.TestCase):
             global_path = os.path.join("var", "log")
         file_path = self.clf.log_folder
         self.assertTrue(file_path == local_path or file_path == global_path)
+
+    def test_fail(self):
+        failed_clf = config_utils.ConfigLocationFinder(force_fail=True)
+        self.assertTrue (failed_clf.general_config_path == tempfile.gettempdir())
+        self.assertTrue (failed_clf.station_list_path == tempfile.gettempdir())
+        self.assertTrue (failed_clf.log_folder == tempfile.gettempdir())
+        self.assertTrue (failed_clf.pid_folder == tempfile.gettempdir())
+        self.assertTrue (failed_clf.err == "Forcing failure")

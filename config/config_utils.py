@@ -22,15 +22,24 @@ class ConfigLocationFinder:
 
     If self.err is set there was an initialisation error
     """
-    def __init__(self):
+
+    def __init__(self, force_fail:bool = False):
+        """
+        Initialise the class
+        :param force_fail: a testing parameter - set true to force a failure
+        """
         # try to use the global locations for configuration files
         self.err = None
         try:
+            if force_fail:
+                raise RuntimeError ("Forcing failure")
             # config comes from /etc/radio_player
             self.__init2__("/etc/radio_player", "/var/run", "/var/log")
         except Exception:
-            # use local locations for configuration files
             try:
+                if force_fail:
+                    raise RuntimeError("Forcing failure")
+                # use local locations for configuration files
                 home = pathlib.Path.home()
                 folder = os.path.join(str(home), RADIO_PLAYER_LOCAL_FOLDER)
                 if not os.access(folder, os.R_OK):

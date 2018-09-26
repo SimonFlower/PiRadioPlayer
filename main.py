@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask
 from flask import render_template
 
@@ -62,20 +64,15 @@ if audio_player.err is not None:
 @app.route('/')
 def base_page() -> str:
     return render_template('base.html',
-                           error_messages = err_msgs)
+                           error_messages = err_msgs,
+                           info_msgs = info_msgs,
+                           national_stations = stations.get_station_list("national"),
+                           regional_stations = stations.get_station_list("regional"),
+                           local_stations = stations.get_station_list("local"))
 
 #######################################################################################################################
 # component parts of the base page
 #######################################################################################################################
-# The programme selector component - selections in this component control the station list component
-@app.route('/component/radio_selector')
-def radio_selector() -> str:
-    return render_template('radio_selector.html',
-                           national_stations = stations.get_station_list("national"),
-                           regional_stations = stations.get_station_list("regional"),
-                           local_stations = stations.get_station_list("local"),
-                           info_msgs=info_msgs)
-
 # The station list component for live stations
 @app.route("/component/live_station_list/<string:zone>")
 def live_station_list(zone: str) -> str:
@@ -84,11 +81,6 @@ def live_station_list(zone: str) -> str:
     else:
         sta_list = stations.get_station_list(zone)
     return render_template('live_station_list.html', stations=sta_list)
-
-# A blank component
-@app.route("/component/blank")
-def blank_component () -> str:
-    return ""
 
 # The schedule for on-demand programs
 @app.route("/component/on_demand_schedule")
@@ -100,20 +92,24 @@ def on_demand_schedule() -> str:
 def play_bar() -> str:
     return "Play bar holding page"
 
+# A blank component
+@app.route("/component/blank")
+def blank_component () -> str:
+    return ""
+
 #######################################################################################################################
 # methods in the application made available to the client
 #######################################################################################################################
 # a URL to power off
 @app.route("/play/stop")
 def play_stop() -> str:
-    if audio_player is not None:
-        audio_player.stop_mpd()
+    if audio_player.err is None:
+        return audio_player.stop_mpd()
     return ""
 
 # a URL to play live stations
 @app.route("/play/live/<path:url>")
 def play_live(url: str) -> str:
-    if audio_player is not None:
-        audio_player.live_stream_mpd(url)
+    if audio_player.err is None:
+        return audio_player.live_stream_mpd(url)
     return ""
-

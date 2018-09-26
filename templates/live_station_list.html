@@ -22,7 +22,7 @@ div.sta-item:hover {
         {% set streaming_url = station['streaming_url'] %}
         <div class="sta-item" onclick="play_url ('{{streaming_url}}')">
             <canvas id="{{station['id']}}" width="150" height="150"></canvas>
-            <script>draw_station("{{station['id']}}", "{{station['display_name']}}");</script>
+            <script>draw_station("{{station['id']}}", "{{station['display_name']}}", "{{station['display_colour']}}");</script>
         </div>
     {% endfor %}
 </div>

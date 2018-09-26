@@ -40,7 +40,8 @@ class AudioPlayer:
                 self.client.add(url)
                 self.client.play(0)
             except Exception as e:
-                msg = "Error communicating with audio player:" + str(e)
+                return "Error communicating with audio player:" + str(e)
+        return ""
 
     def stop_mpd(self) -> str:
         try:
@@ -48,7 +49,7 @@ class AudioPlayer:
             self.client.stop()
         except Exception as e:
             return "Error communicating with audio player:" + str(e)
-        return None
+        return ""
 
     def set_volume(self, volume: int) -> str:
         """
@@ -59,5 +60,5 @@ class AudioPlayer:
             self.client.setvol(volume)
         except Exception as e:
             return "Error communicating with audio player:" + str(e)
-        return None
+        return ""
 

@@ -14,91 +14,110 @@
 		{
             "display_name": "BBC Radio Asian Network",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_asianet_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_asian_network.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_asian_network.m3u8",
+            "display_colour": "#E5007E"
         },
         {
 		    "display_name": "BBC Radio One",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_one.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_one.m3u8",
+            "display_colour": "#ffff00"
         },
         {
 		    "display_name": "BBC Radio One Extra",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_1xtra.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_1xtra.m3u8",
+            "display_colour": "#ffff00"
         },
         {
 		    "display_name": "BBC Radio Two",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_two.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_two.m3u8",
+            "display_colour": "#EC7A08"
         },
         {
 		    "display_name": "BBC Radio Three",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_three.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_three.m3u8",
+            "display_colour": "#D93639"
         },
         {
 		    "display_name": "BBC Radio Four FM",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_fourfm.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_fourfm.m3u8",
+            "display_colour": "#003C73"
         },
         {
 		    "display_name": "BBC Radio Four LW",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_fourlw.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_fourlw.m3u8",
+            "display_colour": "#003C73"
         },
         {
 		    "display_name": "BBC Radio Four Extra",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4extra_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_four_extra.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_four_extra.m3u8",
+            "display_colour": "#814292"
         },
         {
 		    "display_name": "BBC Radio Five Live",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5live_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live.m3u8",
+            "display_colour": "#00AFD8"
         },
         {
 		    "display_name": "BBC Radio Five Live Sports Extra",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5extra_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live_sports_extra.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live_sports_extra.m3u8",
+            "display_colour": "#528F20"
         },
         {
 		    "display_name": "BBC Radio Six Music",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_6music_mf_p",
-            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_6music.m3u8"
+            "streaming_url_hbr": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_6music.m3u8",
+            "display_colour": "#477F80"
         },
         {
 		    "display_name": "BBC Radio World Service UK",
-            "streaming_url": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"
+            "streaming_url": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk",
+            "display_colour": "#A13129"
         },
         {
 		    "display_name": "BBC Radio World Service News",
-            "streaming_url": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-einws"
+            "streaming_url": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-einws",
+            "display_colour": "#A13129"
         }
     ],
     "regional_stations" : [
         {
 		    "display_name": "BBC Radio Cymru",
-            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_cymru_mf_p"
+            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_cymru_mf_p",
+            "display_colour": "#00A3E2"
         },
         {
 		    "display_name": "BBC Radio Foyle",
-            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_foyle_mf_p"
+            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_foyle_mf_p",
+            "display_colour": "#BCBE00"
         },
         {
 		    "display_name": "BBC Radio Nan Gaidheal",
-            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_nangaidheal_mf_p"
+            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_nangaidheal_mf_p",
+            "display_colour": "#1280AD"
         },
         {
 		    "display_name": "BBC Radio Scotland",
-            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_scotlandfm_mf_p"
+            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_scotlandfm_mf_p",
+            "display_colour": "#6D2971"
         },
         {
 		    "display_name": "BBC Radio Ulster",
-            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_ulster_mf_p"
+            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_ulster_mf_p",
+            "display_colour": "#BCBE00"
         },
         {
 		    "display_name": "BBC Radio Wales",
-            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_walesmw_mf_p"
+            "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_walesmw_mf_p",
+            "display_colour": "#C4324F"
         }
     ],
     "local_stations" : [
@@ -119,7 +138,7 @@
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrcorn_mf_p"
         },
         {
-		    "display_name": "BBC Coventry & Warwickshire",
+		    "display_name": "BBC Radio Coventry and Warwickshire",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrwmcandw_mf_p"
         },
         {
@@ -135,7 +154,7 @@
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrdevon_mf_p"
         },
         {
-		    "display_name": "BBC Essex",
+		    "display_name": "BBC Radio Essex",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lressex_mf_p"
         },
         {
@@ -147,7 +166,7 @@
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrguern_mf_p"
         },
         {
-		    "display_name": "BBC Hereford & Worcester",
+		    "display_name": "BBC Radio Hereford and Worcester",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrhandw_mf_p"
         },
         {
@@ -191,7 +210,7 @@
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrmersey_mf_p"
         },
         {
-		    "display_name": "BBC Newcastle",
+		    "display_name": "BBC Radio Newcastle",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrnewc_mf_p"
         },
         {
@@ -223,7 +242,7 @@
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrsolent_mf_p"
         },
         {
-		    "display_name": "BBC Somerset",
+		    "display_name": "BBC Radio Somerset",
             "streaming_url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrsomer_mf_p"
         },
         {

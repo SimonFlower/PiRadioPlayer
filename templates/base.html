@@ -1,18 +1,128 @@
 <!doctype html>
 <html>
 <head>
+<title>Radio Player</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- include JQuery -->
 <script src="/static/jquery-3.3.1.js"></script>
+
+<!-- include JQuery UI -->
+<link rel="stylesheet" href="/static/jquery-ui-1.12.1/jquery-ui.min.css">
+<script src="/static/jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+<script src="/static/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+<!-- include radio player functions -->
 <script src="/static/radio_player.js"></script>
+
+<!-- include radio player styles -->
 <link rel="stylesheet" href="/static/style.css">
 
-<title>Radio Player</title>
-
 <style>
+    .ss-container {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
 
+    .ss-item {
+        flex: 0 0 auto;
+        display: block;
+        padding-left: 20px;
+        cursor: inherit;
+        text-align: left;
+        height: 100%;
+    }
+
+    div.bbc-home:hover {
+        background: #303030;
+    }
 </style>
 
+<script>
+    /* global variables holding radio player state and zone*/
+    var rp_state = 'standby';
+    var rp_zone = 'national';
+
+    /* copy station lists from server side, encoding as JSON in Jinja and decoding in javascript */
+    var national_stations = eval(' {{ national_stations|tojson|safe }} ');
+    var regional_stations = eval(' {{ regional_stations|tojson|safe }} ');
+    var local_stations = eval(' {{ local_stations|tojson|safe }} ');
+
+    /* onclick callback to display the Information dialog */
+    function open_info_dialog() {
+        $( "#dialog_info" ).dialog({width: 600, height: 400});
+    }
+
+    /* onclick callback to link to the BBC radio website */
+    function goto_bbc_radio() {
+        window.open ("https://www.bbc.co.uk/radio", "_blank");
+    }
+
+    /* change radio player state */
+    function change_state (state) {
+        switch (state) {
+            case 'standby':
+                play_stop();
+                set_visible ("#item_national_regional_local", false);
+                set_visible ("#item_station_list", false);
+                break;
+            case 'live_radio':
+                show_station_list (rp_zone);
+                set_visible ("#item_national_regional_local", true);
+                set_visible ("#item_station_list", false);
+                break;
+            case 'on_demand':
+                populate_station_select (rp_zone);
+                show_on_demand_schedule();
+                set_visible ("#item_national_regional_local", true);
+                set_visible ("#item_station_list", true);
+                break;
+        }
+
+        /* store state so that it can be used in other parts of the page */
+        rp_state = state;
+    }
+
+    /* change radio player 'zone' */
+    function change_zone (zone) {
+        switch (rp_state) {
+            case 'standby':
+                break;
+            case 'live_radio':
+                show_station_list(zone);
+                break;
+            case 'on_demand':
+                populate_station_select (zone);
+                break;
+        }
+
+        /* store zone so that it can be used in other parts of the page */
+        rp_zone = zone;
+    }
+
+    /* fill the select station list from one of the list of stations */
+    function populate_station_select (zone) {
+        /* which station list should we use? */
+         switch (zone) {
+             case 'national': stations = national_stations; break;
+             case 'regional': stations = regional_stations; break;
+             case 'local': stations = local_stations; break;
+             default: stations = [];
+         }
+
+          /* empty the current contents of the select list */
+          $("#select_station_list").empty();
+
+          /* add the new list */
+          for (i = 0; i < stations.length; i++) {
+              station = stations[i];
+              $('#select_station_list').append($('<option>', {value: station['id'], text: station['display_name']}));
+          }
+    }
+</script>
 </head>
+
 
 <body>
 <!-- This section displays error messages (if any) -->
@@ -27,8 +137,78 @@
     </section>
 {% endif %}
 
-<!-- This section holds the live/on-demand and station selection -->
-<section id="radio_selector"></section>
+<!-- This section holds the standby/live/on-demand selector, the national/regional/local selector and (for on demand) the station selection -->
+<section id="radio_selector">
+    <div id="container_main" class="ss-container">
+        <div id="item_home_and_info" class="ss-item">
+            <div class="bbc-home" onclick="goto_bbc_radio ()">
+                <canvas id="BBCHomePage" width="90" height="55"></canvas>
+                <script>draw_bbc_logo("BBCHomePage");</script>
+            </div>
+            <button id="dialog-link" onclick="open_info_dialog()">Program Info</button>
+        </div>
+
+        <div id="item_standby_live_ondemand" class="ss-item">
+            <fieldset>
+                <form action="">
+                    <div class="alignLeft">
+                        <input type="radio" name="State" value="PowerOff" id="PowerOff" checked="checked" onclick="change_state('standby')">
+                        <label for="PowerOff">Power Off</label>
+                    </div>
+                    <div class="alignLeft">
+                        <input type="radio" name="State" value="Live" id="Live" onclick="change_state('live_radio')">
+                        <label for="Live">Live Radio</label>
+                    </div>
+                    <div class="alignLeft">
+                        <input type="radio" name="State" value="On Demand" id="OnDemand" onclick="change_state('on_demand')">
+                        <label for="OnDemand">On Demand</label>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+
+        <div id="item_national_regional_local" class="ss-item">
+            <fieldset>
+                <form action="">
+                    <div class="alignLeft">
+                        <input type="radio" name="Zone" value="National" id="National" checked="checked" onclick="change_zone('national')">
+                        <label for="National">National</label>
+                    </div>
+                    <div class="alignLeft">
+                        <input type="radio" name="Zone" value="Regional" id="Regional" onclick="change_zone('regional')">
+                        <label for="Regional">Regional</label>
+                    </div>
+                    <div class="alignLeft">
+                        <input type="radio" name="Zone" value="Local" id="Local" onclick="change_zone('local')">
+                        <label for="Local">Local</label>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+
+        <div id="item_station_list" class="ss-item">
+            <form action="">
+                <select id="select_station_list">
+                </select>
+            </form>
+        </div>
+
+        <!-- The information dialog -->
+        <div id="dialog_info" title="Radio Player Information" class="ui-helper-hidden">
+            <p>
+            <table>
+            {% for name,msg in info_msgs.items() %}
+            <tr>
+                <td><b>{{ name }}:</b></td>
+                <td>{{ msg }}</td>
+            </tr>
+            {% endfor %}
+            </table>
+            </p>
+        </div>
+    </div>
+    <hr>
+</section>
 
 <!--- This section holds the station or schedule list -->
 <section id="station_schedule_selector"></section>
@@ -39,7 +219,7 @@
 <!-- Load initial contents of page sections -->
 <!-- TODO: add success/failure handlers to the JQuery calls -->
 <script>
-$( "#radio_selector" ).load( "/component/radio_selector" );
+change_state ('standby');
 $( "#station_schedule_selector" ).load( "/component/blank" );
 $( "#play_bar" ).load( "/component/play_bar" );
 </script>

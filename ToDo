@@ -1,0 +1,4 @@
+Process the errors returned from methods in audio_mpd.py - they should be passed to the user somehow
+
+Have a reload function that restarts the app and so loads config files and restart MPD connection
+    But keeps current state when base.html is reloaded

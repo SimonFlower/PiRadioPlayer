@@ -25,9 +25,19 @@ function play_stop () {
     $( "#station_schedule_selector" ).load( "/component/blank" );
 }
 
+/********************************************************************************************************************
+ * general utilities
+ ********************************************************************************************************************/
+/** hide or show a component */
+function set_visible (id, visible) {
+    if (visible)
+        $(id).show();
+    else
+        $(id).hide();
+}
 
 /********************************************************************************************************************
- * graphics code for rendering a BBC logo anf the station widgets
+ * graphics code for rendering a BBC logo and the station widgets
  ********************************************************************************************************************/
 /** draw the BBC logo on a canvas
  *  @param string id the ID of the canvas to draw on */
@@ -48,14 +58,14 @@ function draw_bbc_logo (id) {
 /** draw a station on a canvas
  *  @param string id the ID of the canvas to draw on
  *  @param string name the station name to draw */
-function draw_station (id, name) {
+function draw_station (id, name, colour) {
 
     /* set up to draw on the canvas */
     var canvas = document.getElementById(id);
     var ctx = canvas.getContext("2d");
 
     /* draw the circle */
-    ctx.strokeStyle="#FF0000";
+    ctx.strokeStyle=colour;
     ctx.lineWidth=5;
     ctx.beginPath();
     var radius;
@@ -108,7 +118,7 @@ function draw_station (id, name) {
       ctx.fillText(description, canvas.width/2, (6*canvas.height)/10);
     ctx.font = "16pt Arial";
     block_text (ctx, bottom_title, canvas.width/2, (14*canvas.height)/15, false, 3,
-                "#FFFFFF", "#000000", "#FF0000");
+                "#FFFFFF", "#000000", colour);
 }
 
 /** draw a text string in block characters with background rectangles

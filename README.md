@@ -63,15 +63,18 @@ On Raspberry PI create a project folder, set up a Python virtual environment and
 
 ```
 cd <project-folder>
-virtualenv radio_player psutil flask python-mpd2
-activate radio_player
+virtualenv radio_player_env psutil flask python-mpd2
+source radio_player_env/bin/activate
 git clone https://github.com/SimonFlower/PiRadioPlayer
 ```
 
 To run the radio player:
 
 ```
-cd <top-level-project-folder>
+cd <project-folder>
+source radio_player_env/bin/activate
+cd PiRadioPlayer
+export FLASK_APP=main.py
 flask run --host=0.0.0.0
 ```
 

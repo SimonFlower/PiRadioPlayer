@@ -2,6 +2,7 @@ import json
 
 from flask import Flask
 from flask import render_template
+from flask import request
 
 from config import config_utils
 from config import station_list_reader
@@ -26,9 +27,6 @@ app = Flask(__name__)
 # top level application variables
 err_msgs = list ()
 info_msgs = dict ()
-program_config = None
-stations = None
-audio_player = None
 
 # initialise configuration
 program_config = config_utils.ConfigLocationFinder()
@@ -49,67 +47,102 @@ if len (stations.err) > 0:
 # initialise audio player
 audio_player = audio_mpd.AudioPlayer(program_config.config['mpd_host'],
                                      program_config.config['mpd_port'])
-if audio_player.err is not None:
-    err_msgs += [audio_player.err]
 
 #######################################################################################################################
-# base page for the applications - this is a single page application with compnent parts of the page that can be
-# loaded separately:
+# Base page for the applications - this is a single page application with sections:
 # - An error message component - only displayed if there are errors initialising the app
-# - Standby / Live radio / On demand selection pane
-# - Live radio selection / On demand selection
-# - Play bar - 'now playing' information
+# - Standby / Region / On-demand station selection pane
+# - Live radio selection / On demand schedule selection
+# - Play bar - with 'now playing' information
+# The final two component parts of the page can be loaded separately into the base page
 #######################################################################################################################
-# The base page - client side code loads the individual components
+# The base page
 @app.route('/')
 def base_page() -> str:
     return render_template('base.html',
                            error_messages = err_msgs,
-                           info_msgs = info_msgs,
-                           national_stations = stations.get_station_list("national"),
-                           regional_stations = stations.get_station_list("regional"),
-                           local_stations = stations.get_station_list("local"))
+                           info_msgs = info_msgs)
 
 #######################################################################################################################
 # component parts of the base page
 #######################################################################################################################
-# The station list component for live stations
-@app.route("/component/live_station_list/<string:zone>")
-def live_station_list(zone: str) -> str:
-    if stations is None:
-        sta_list = list ()
-    else:
-        sta_list = stations.get_station_list(zone)
-    return render_template('live_station_list.html', stations=sta_list)
-
-# The schedule for on-demand programs
-@app.route("/component/on_demand_schedule")
-def on_demand_schedule() -> str:
-    return render_template('schedule_viewer.html')
+# The station/schedule component
+@app.route("/component/station_schedule")
+def station_schedule() -> str:
+    operation = request.args.get ('operation')
+    if operation is None:
+        operation = ""
+    if operation == 'live':
+        zone = request.args.get ('zone')
+        return render_template('live_station_list.html', stations=stations.get_station_list(zone))
+    if operation == 'on_demand':
+        return render_template('schedule_viewer.html')
+    if operation == 'blank':
+        return ""
+    return "/component/schedule: Unrecognised operation [" + operation + "]"
 
 # The play bar component
 @app.route('/component/play_bar')
 def play_bar() -> str:
-    return "Play bar holding page"
+    operation = request.args.get ('operation')
+    if operation is None:
+        operation = ""
+    if operation == 'stop':
+        audio_player.stop()
+        return ""
+    if operation == 'live_station':
+        station_id = request.args.get ('station_id')
+        station = stations.find_station(station_id)
+        if station is None:
+            return "/component/play_bar: Missing or invalid 'station_id' parameter"
+        errmsg = audio_player.play(station['streaming_url'])
+        if len(errmsg) > 0:
+            return "Error with audio: " + errmsg
+        return render_template('playbar_live.html', station=station, volume=audio_player.volume)
 
-# A blank component
-@app.route("/component/blank")
-def blank_component () -> str:
-    return ""
+    return "/component/play_bar: Unrecognised operation [" + operation + "]"
 
 #######################################################################################################################
-# methods in the application made available to the client
+# audio operations
 #######################################################################################################################
-# a URL to power off
-@app.route("/play/stop")
-def play_stop() -> str:
-    if audio_player.err is None:
-        return audio_player.stop_mpd()
-    return ""
+@app.route("/audio")
+def audio () -> str:
+    errmsg = ""
 
-# a URL to play live stations
-@app.route("/play/live/<path:url>")
-def play_live(url: str) -> str:
-    if audio_player.err is None:
-        return audio_player.live_stream_mpd(url)
-    return ""
+    # process volume change request
+    param = request.args.get ('volume')
+    if param is not None:
+        try:
+            volume = int (float (param))
+            if volume < 0 or volume > 100:
+                raise ValueError
+        except ValueError:
+            return "/audio: bad volume value: [" + param + "]"
+        errmsg += audio_player.set_volume(volume)
+
+    # process pause request
+    param = request.args.get ('pause')
+    if param is not None:
+        try:
+            pause = int (float (param))
+            if pause < 0 or pause > 1:
+                raise ValueError
+        except ValueError:
+            return "/audio: bad pause value: [" + param + "]"
+        errmsg += audio_player.pause(pause)
+
+    return errmsg
+
+#######################################################################################################################
+# odds and ends
+#######################################################################################################################
+
+# we need to process the javascript for the project using a template, so that data can
+# be passed from server to client
+@app.route("/scripts/radio_player.js")
+def process_script () -> str:
+    return render_template('radio_player.js',
+                           national_stations = stations.get_station_list(station_list_reader.ZONE_NATIONAL),
+                           regional_stations = stations.get_station_list(station_list_reader.ZONE_REGIONAL),
+                           local_stations = stations.get_station_list(station_list_reader.ZONE_LOCAL))
+

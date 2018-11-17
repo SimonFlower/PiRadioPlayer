@@ -19,8 +19,8 @@ div.sta-item:hover {
 <body>
 <div class="sta-container">
     {% for station in stations %}
-        {% set streaming_url = station['streaming_url'] %}
-        <div class="sta-item" onclick="play_url ('{{streaming_url}}')">
+        {% set station_id = station['id'] %}
+        <div class="sta-item" onclick="play_live_station ('{{station_id}}')">
             <canvas id="{{station['id']}}" width="150" height="150"></canvas>
             <script>draw_station("{{station['id']}}", "{{station['display_name']}}", "{{station['display_colour']}}");</script>
         </div>

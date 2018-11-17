@@ -1,10 +1,119 @@
 <html>
 <head>
+<style>
+.bar-container {
+    display: flex;
+    align-items: center;
+}
+
+.gap {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.title {
+}
+
+.button {
+}
+
+.volume {
+}
+
+.volume-container {
+    display: flex;
+    align-items: center
+}
+
+.volume-items {
+}
+
+div.button:hover {
+    background: #303030;
+}
+</style>
 </head>
 
 <body>
-    <p>Name: {{ station_name }} </p>
-    <img src="/static/icons/stop.png" height="50" border="1">
-    <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+    <div class="bar-container">
+        <div class="button">
+            <img src="/static/icons/stop2.png" onclick="play_stop(false)" height="32">
+        </div>
+        <div class="gap"></div>
+        <div class="button">
+            <img src="/static/icons/pause.png" height="32">
+        </div>
+
+        <div class="gap"></div>
+        <div class="gap"></div>
+        <div class="title">
+            Now playing: <b>{{ station['display_name'] }} live</b>
+        </div>
+        <div class="gap"></div>
+        <div class="gap"></div>
+
+        <div class="volume">
+            <div class="volume-container">
+                <div class="volume-items">
+                    <img src="/static/icons/volume_minus.png" alt="Volume -" height="32">
+                </div>
+                <div class="volume-items">
+                    <div id="slider" style="margin:50px"></div>
+<!-- <input type="range" min="0" max="100" value="{{ volume }}" class="slider" id="volume_slider" tooltip_val="{{ volume }}"> -->
+                </div>
+                <div class="volume-items">
+                    <img src="/static/icons/volume_plus.png" alt="Volume +" height="32">
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+var tooltip = $('<div id="tooltip" />').css({
+    position: 'absolute',
+    top: -25,
+    left: -10
+}).hide();
+$("#slider").slider({
+    value: {{ volume }},
+    min: 0,
+    max: 100,
+    step: 1,
+    slide: function(event, ui) {
+        tooltip.text(ui.value);
+    },
+    change: function(event, ui) {}
+}).find(".ui-slider-handle").append(tooltip).hover(function() {
+    tooltip.show()
+}, function() {
+    tooltip.hide()
+})
+
+/*
+$( function() {
+    $( document ).tooltip();
+} );
+
+$(function() {
+    $( ".slider" ).tooltip({
+       content: function() { return $(this).attr('tooltip_val'); },
+    });
+});
+
+$(document).on('input', '#volume_slider', function() {
+    $( "#volume_slider" ).tooltip("option", "content", $(this).val);
+    $.get("/audio?volume=" + $(this).val(), function(data, status){
+        if (status != "success")
+            title = status
+        else if (data != "")
+            title = data
+        else
+            title = $(this).val()
+        $("#volume_slider").tooltip("option", "content", title);
+    });
+});
+*/
+</script>
+
 </body>
 </html>

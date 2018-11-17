@@ -1,29 +1,116 @@
+/********************************************************************************************************************
+ * client side calls to change client side state
+ ********************************************************************************************************************/
+
+/* global variables holding radio player state and zone*/
+var rp_state = 'standby';
+var rp_zone = 'national';
+
+/* copy station lists from server side, encoding as JSON in Jinja and decoding in javascript */
+var national_stations = eval(' {{ national_stations|tojson|safe }} ');
+var regional_stations = eval(' {{ regional_stations|tojson|safe }} ');
+var local_stations = eval(' {{ local_stations|tojson|safe }} ');
+
+/* onclick callback to display the Information dialog */
+function open_info_dialog() {
+    $( "#dialog_info" ).dialog({width: 600, height: 400});
+}
+
+/* onclick callback to link to the BBC radio website */
+function goto_bbc_radio() {
+    window.open ("https://www.bbc.co.uk/radio", "_blank");
+}
+
+/* change radio player state */
+function change_state (state) {
+    switch (state) {
+        case 'standby':
+            play_stop(true);
+            set_visible ("#item_national_regional_local", false);
+            set_visible ("#item_station_list", false);
+            break;
+        case 'live_radio':
+            show_live_stations (rp_zone);
+            set_visible ("#item_national_regional_local", true);
+            set_visible ("#item_station_list", false);
+            break;
+        case 'on_demand':
+            populate_station_select (rp_zone);
+            show_on_demand_schedule();
+            set_visible ("#item_national_regional_local", true);
+            set_visible ("#item_station_list", true);
+            break;
+    }
+
+    /* store state so that it can be used in other parts of the page */
+    rp_state = state;
+}
+
+/* change radio player 'zone' */
+function change_zone (zone) {
+    switch (rp_state) {
+        case 'standby':
+            break;
+        case 'live_radio':
+            show_live_stations(zone);
+            break;
+        case 'on_demand':
+            populate_station_select (zone);
+            break;
+    }
+
+    /* store zone so that it can be used in other parts of the page */
+    rp_zone = zone;
+}
+
+/* fill the select station list from one of the list of stations */
+function populate_station_select (zone) {
+    /* which station list should we use? */
+    switch (zone) {
+        case 'national': stations = national_stations; break;
+        case 'regional': stations = regional_stations; break;
+        case 'local': stations = local_stations; break;
+        default: stations = [];
+    }
+
+    /* empty the current contents of the select list */
+    $("#select_station_list").empty();
+
+    /* add the new list */
+    for (i = 0; i < stations.length; i++) {
+        station = stations[i];
+        $('#select_station_list').append($('<option>', {value: station['id'], text: station['display_name']}));
+    }
+}
+
 
 /********************************************************************************************************************
  * client side calls to the server
  ********************************************************************************************************************/
 
 /** select the station list to be displayed in the station list / schedule component */
-function show_station_list (zone) {
-    $( "#station_schedule_selector" ).load( "/component/live_station_list/" + zone );
+function show_live_stations (zone) {
+    $( "#station_schedule_selector" ).load( "/component/station_schedule?operation=live&zone=" + zone );
 }
 
 /** select the on-demand schedule to be displayed in the station list / schedule component */
 function show_on_demand_schedule () {
-    $( "#station_schedule_selector" ).load( "/component/on_demand_schedule" );
+    $( "#station_schedule_selector" ).load( "/component/station_schedule?operation=on_demand" );
 }
 
 /** play a station
   * @param string url the station's URL */
-function play_url (url) {
-    $.get ("/play/live/" + url);
+function play_live_station (station_id) {
+    $( "#play_bar" ).load( "/component/play_bar?operation=live_station&station_id=" + station_id);
 }
 
 /** stop playing and go to 'standby' */
-function play_stop () {
-    $.get ("/play/stop");
-    $( "#station_schedule_selector" ).load( "/component/blank" );
+function play_stop (standby) {
+    $( "#play_bar" ).load( "/component/play_bar?operation=stop");
+    if (standby)
+        $( "#station_schedule_selector" ).load( "/component/station_schedule?operation=blank" );
 }
+
 
 /********************************************************************************************************************
  * general utilities
@@ -35,6 +122,7 @@ function set_visible (id, visible) {
     else
         $(id).hide();
 }
+
 
 /********************************************************************************************************************
  * graphics code for rendering a BBC logo and the station widgets

@@ -1,0 +1,32 @@
+<html>
+<head>
+<script src="static/jquery-3.3.1.js"></script>
+<link rel="stylesheet" href="static/jquery-ui-1.12.1/jquery-ui.min.css">
+<script src="static/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+</head>
+<body>
+    <div id="slider" style="margin:50px"></div>
+</body>
+<script>
+var tooltip = $('<div id="tooltip" />').css({
+    position: 'absolute',
+    top: -25,
+    left: -10
+}).hide();
+$("#slider").slider({
+    value: 75,
+    min: 0,
+    max: 100,
+    step: 1,
+    slide: function(event, ui) {
+        tooltip.text("Value: " + ui.value + " (units)");
+    },
+    change: function(event, ui) {}
+}).find(".ui-slider-handle").append(tooltip).hover(function() {
+    tooltip.show()
+}, function() {
+    tooltip.hide()
+})
+</script>
+</html>

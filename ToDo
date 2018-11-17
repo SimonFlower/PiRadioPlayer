@@ -1,4 +1,5 @@
-Process the errors returned from methods in audio_mpd.py - they should be passed to the user somehow
+Code doesn't pick up changes in external mpd
+    EG, start program without mpd running, play a radio station, start mpd, play a radio station
 
 Have a reload function that restarts the app and so loads config files and restart MPD connection
     But keeps current state when base.html is reloaded

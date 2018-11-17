@@ -1,6 +1,10 @@
 import json
 import re
 
+ZONE_NATIONAL = "NATIONAL"
+ZONE_REGIONAL = "REGIONAL"
+ZONE_LOCAL = "LOCAL"
+
 class StationListReader:
     def __init__(self, station_list_filename: str, force_fail: bool = False):
         """
@@ -25,6 +29,9 @@ class StationListReader:
         except Exception as e:
             self.err += [str(e)]
             self.stations = dict ()
+            self.stations['national_stations'] = list()
+            self.stations['regional_stations'] = list()
+            self.stations['local_stations'] = list()
 
         # check stations lists exist
         if not 'national_stations' in self.stations:
@@ -39,25 +46,70 @@ class StationListReader:
 
         # check the station list - also add a unique ID to each station
         id = 1
-        for station in self.get_station_list("national"):
+        for station in self.get_station_list(ZONE_NATIONAL):
             self.__check_station__(station, id)
             id += 1
-        for station in self.get_station_list("regional"):
+        for station in self.get_station_list(ZONE_REGIONAL):
             self.__check_station__(station, id)
             id += 1
-        for station in self.get_station_list("local"):
+        for station in self.get_station_list(ZONE_LOCAL):
             self.__check_station__(station, id)
             id += 1
 
-    # return national, regional or local stations from the stations list
     def get_station_list(self, zone: str) -> dict:
-        if zone.upper() == "NATIONAL":
+        """
+        return national, regional or local stations from the stations list
+        :param zone: one of the ZONE_ constants
+        :return: the station details or None
+        """
+        if zone.upper() == ZONE_NATIONAL:
             return self.stations['national_stations']
-        if zone.upper() == "REGIONAL":
+        if zone.upper() == ZONE_REGIONAL:
             return self.stations['regional_stations']
-        if zone.upper() == "LOCAL":
+        if zone.upper() == ZONE_LOCAL:
             return self.stations['local_stations']
         return list()
+
+    def find_station (self, station_id: str) -> dict:
+        """
+        Given a station ID, find the station details
+        :param station_id: the id of the station to find, in the form id_<int>
+        :return: the station details or None
+        """
+        # search the station lists
+        for station in self:
+            if station['id'] == station_id:
+                return station
+        return None
+
+    def __getitem__(self, item_index) -> dict:
+        """
+        Because sequences are iterable in Python, implemeting __getitem__ and __len__
+        allows an object to be iterated
+        :param item_index: the index of the item to return
+        :return: the item
+        """
+        if item_index < 0:
+            raise IndexError ("item_index out of range")
+        if item_index < len (self.get_station_list(ZONE_NATIONAL)):
+            return self.get_station_list(ZONE_NATIONAL)[item_index]
+        item_index -= len (self.get_station_list(ZONE_NATIONAL))
+        if item_index < len (self.get_station_list(ZONE_REGIONAL)):
+            return self.get_station_list(ZONE_REGIONAL)[item_index]
+        item_index -= len (self.get_station_list(ZONE_REGIONAL))
+        if item_index < len (self.get_station_list(ZONE_LOCAL)):
+            return self.get_station_list(ZONE_LOCAL)[item_index]
+        raise IndexError ("item_index out of range")
+
+    def __len__(self) -> int:
+        """
+        Because sequences are iterable in Python, implemeting __getitem__ and __len__
+        allows an object to be iterated
+        :return: the number of stations
+        """
+        return len(self.get_station_list(ZONE_NATIONAL)) + \
+               len(self.get_station_list(ZONE_REGIONAL)) + \
+               len(self.get_station_list(ZONE_LOCAL))
 
     def __check_station__(self, station: dict, id: int) -> None:
         station['id'] = "id_" + str(id)
@@ -73,3 +125,4 @@ class StationListReader:
             station['display_colour'] = '#FF0000'
         elif not self.colour_pattern.match (station['display_colour']):
             station['display_colour'] = '#FF0000'
+
